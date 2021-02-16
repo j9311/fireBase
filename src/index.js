@@ -1,17 +1,23 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+const { ApolloServer } = require('apollo-server');
+const gql = require ('graphql-tag);');
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+const typeDefs = gql`
+    type Query {
+        sayhi: String!
+    }
+`;
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+const resolvers = {
+    Query: {
+        sayHi: () => 'Um, hai.'
+    }
+};
+
+const server = new ApolloServer({
+    typeDefs: typeDefs,
+    resolvers: resolvers
+});
+
+server.listen({ port: 5000}).then((res) => {
+    console.log(`Server running at ${res.url}`);
+});
